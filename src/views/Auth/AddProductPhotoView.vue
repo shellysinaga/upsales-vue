@@ -9,7 +9,7 @@ function uploadPhotos(e: any) {
   let files = e.target.files
 
   if (photos.value.length + files.length > 7) {
-    alert('A product can only contains 7 photos')
+    alert('A product can only contain 7 photos')
     return false
   }
 
