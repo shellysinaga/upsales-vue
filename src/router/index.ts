@@ -5,6 +5,7 @@ import AddProductView from '@/views/Auth/AddProductView.vue'
 import AddProductPhotoView from '@/views/Auth/AddProductPhotoView.vue'
 import DashboardView from '@/views/Dashboard/DashboardView.vue'
 import ProductIndexView from '@/views/Dashboard/Product/ProductIndexView.vue'
+import DashboardLayout from '@/components/Dashboard/Layout/DashboardLayout.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,13 +32,26 @@ const router = createRouter({
     },
     {
       path: '/dashboard',
-      name: 'dashboard',
-      component: DashboardView,
-    },
-    {
-      path: '/dashboard/products',
-      name: 'dashboard-product-index',
-      component: ProductIndexView
+      component: DashboardLayout,
+      children: [
+        {
+          path: '',
+          name: 'dashboard',
+          component: DashboardView,
+          meta: {
+            isDashboard: true,
+            activeMenu: 'dashboard',
+          },
+        },
+        {
+          path: 'products',
+          name: 'dashboard-product-index',
+          component: ProductIndexView,
+          meta: {
+            activeMenu: 'products',
+          },
+        },
+      ],
     },
   ]
 })
