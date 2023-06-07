@@ -6,8 +6,8 @@
         Selling the good things only
       </p>
     </header>
-    <a href="add.html" class="btn-primary md:px-9">
+    <RouterLink :to="{ name: 'dashboard-product-add' }" class="btn-primary md:px-9">
       Add Product
-    </a>
+    </RouterLink>
   </div>
 </template>
