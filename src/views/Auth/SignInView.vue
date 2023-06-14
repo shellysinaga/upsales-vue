@@ -9,7 +9,7 @@
   import { useUserStore } from '@/stores/user'
   import { useCategoryStore } from '@/stores/category'
 
-  import type Register from '@/types/register'
+  import type Login from '@/types/login'
 
   const API_URL = import.meta.env.VITE_API_URL as string
 
@@ -25,19 +25,17 @@
     if (categoryStore.categories.length === 0) categoryStore.fetchCategories()
   })
 
-  const form = ref<Register>({
-    name: '',
+  const form = ref<Login>({
     email: '',
     password: '',
-    category_id: null,
   })
 
-  async function register(): Promise<void> {
+  async function login(): Promise<void> {
     try {
-      const { data } = await axios.post(`${API_URL}/register`, form.value)
+      const { data } = await axios.post(`${API_URL}/login`, form.value)
       localStorage.setItem('access_token', data.result?.access_token)
       userStore.fetchUser()
-      router.push({ name: 'add-product' })
+      router.push({ name: 'dashboard' })
     } catch (error) {
       console.error(error)
     }
@@ -53,20 +51,10 @@
         <div class="grid items-center justify-between gap-8 md:grid-cols-2">
           <SignUpHeader />
 
-          <form @submit.prevent="register" method="POST" action="" class="bg-white rounded-[30px] p-6 md:max-w-[435px] mx-auto w-full flex flex-col shadow-sm">
-            <p class="text-dark font-bold text-[26px] mb-5">Sign Up</p>
+          <form @submit.prevent="login" method="POST" action="" class="bg-white rounded-[30px] p-6 md:max-w-[435px] mx-auto w-full flex flex-col shadow-sm">
+            <p class="text-dark font-bold text-[26px] mb-5">Sign In</p>
 
             <div class="flex flex-col gap-[18px]">
-              <!-- form group -->
-              <div class="flex flex-col gap-2">
-                <label for="" class="text-base font-medium text-dark">
-                  Company name
-                </label>
-                <input type="text" name="name" placeholder="Write your company name"
-                  class="px-5 py-4 text-base bg-transparent border-2 rounded-full outline-none border-borderLight focus:border-primary placeholder:text-placeholderText text-dark"
-                  v-model="form.name"
-                  required>
-              </div>
               <!-- form group -->
               <div class="flex flex-col gap-2">
                 <label for="" class="text-base font-medium text-dark">
@@ -88,30 +76,9 @@
                   v-model="form.password"
                   required>
               </div>
-              <!-- form group -->
-              <div class="flex flex-col gap-2">
-                <label for="" class="text-base font-medium text-dark">
-                  Category
-                </label>
-                <select name="category"
-                  class="bg-transparent px-5 py-4 text-base border-2 rounded-full outline-none appearance-none border-borderLight focus:border-primary placeholder:text-placeholderText bg-[url('@/assets/svg/ic-chevron-down.svg')] bg-[calc(100%-20px)_center] bg-no-repeat invalid:required:text-placeholderText"
-                  v-model="form.category_id"
-                  required>
-                  <option value="" selected hidden disabled>
-                    Select company category
-                  </option>
-                  <option
-                    v-for="category in categoryStore.categories" 
-                    :key="category.id"
-                    :value="category.id"
-                  >
-                    {{ category.name }}
-                  </option>
-                </select>
-              </div>
             </div>
-            <button type="submit" class="btn-primary mt-[30px]">
-                Continue Create Account
+            <button type="submit" :to="{ name: 'add-product' }" class="btn-primary mt-[30px]">
+                Sign In
             </button>
           </form>
         </div>
